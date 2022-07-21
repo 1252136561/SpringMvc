@@ -31,4 +31,7 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
 <!--    使用注解驱动，省略上配置代码，可优先写，需要命名空间-->
     <mvc:annotation-driven/>
+
+    <mvc:resources mapping="/js/**" location="/js/"/>
+
 </beans>
