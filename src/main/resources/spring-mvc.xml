@@ -12,26 +12,42 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
     <!--    Controller组件扫描-->
     <context:component-scan base-package="com.demo.controller"/>
 
-<!--    配置内部资源解析器-->
+    <!--    配置内部资源解析器-->
 
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/jsp/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
-<!--    配置了处理器映射器-->
-<!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
-<!--        <property name="messageConverters">-->
-<!--            <list>-->
+    <!--    配置了处理器映射器-->
+    <!--    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+    <!--        <property name="messageConverters">-->
+    <!--            <list>-->
 
-<!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
+    <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>-->
+    <!--            </list>-->
+    <!--        </property>-->
+    <!--    </bean>-->
 
-<!--    使用注解驱动，省略上配置代码，可优先写，需要命名空间-->
-    <mvc:annotation-driven/>
+    <!--    使用注解驱动，省略上配置代码，可优先写，需要命名空间-->
+    <mvc:annotation-driven conversion-service="ConverterService"/>
 
-    <mvc:resources mapping="/js/**" location="/js/"/>
+    <!--&lt;!&ndash;    开发访问权限 mapping 地址 location目录路径&ndash;&gt;-->
+    <!--    <mvc:resources mapping="/js/**" location="/js/"/>-->
+    <!--or找不到就交给原始容器即Tomacat-->
+    <mvc:default-servlet-handler/>
+    <!--    申明日期转换器-->
+    <bean id="ConverterService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.demo.converter.DateConverter"/>
+            </list>
+        </property>
+    </bean>
+    <!--    文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxInMemorySize" value="50000"/>
 
+    </bean>
 </beans>
